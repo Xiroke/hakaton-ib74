@@ -1,12 +1,12 @@
-import { Outlet, createRootRouteWithContext } from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
+import type { QueryClient } from '@tanstack/react-query'
 
-import Header from '../components/Header'
+import { TanStackDevtools } from '@tanstack/react-devtools'
+import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
+import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
+
+import { SidebarProvider } from '@/components/ui/sidebar'
 
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
-
-import type { QueryClient } from '@tanstack/react-query'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -15,8 +15,9 @@ interface MyRouterContext {
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: () => (
     <>
-      <Header />
-      <Outlet />
+      <SidebarProvider>
+        <Outlet />
+      </SidebarProvider>
       <TanStackDevtools
         config={{
           position: 'bottom-right',
