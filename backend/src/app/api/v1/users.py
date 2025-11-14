@@ -39,7 +39,7 @@ async def write_user(
     if created_user is None:
         raise NotFoundException("Failed to create user")
 
-    user_read = await crud_users.get(db=db, id=created_user["id"], schema_to_select=UserRead)
+    user_read = await crud_users.get(db=db, id=created_user.id, schema_to_select=UserRead)
     if user_read is None:
         raise NotFoundException("Created user not found")
 

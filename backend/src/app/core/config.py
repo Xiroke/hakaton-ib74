@@ -127,6 +127,11 @@ class EnvironmentSettings(BaseSettings):
     ENVIRONMENT: EnvironmentOption = config("ENVIRONMENT", default=EnvironmentOption.LOCAL)
 
 
+class URLS(BaseSettings):
+    BACKEND_URL: str = config("BACKEND_URL", default="http://localhost:8000")
+    FRONTEND_URL: str = config("FRONTEND_URL", default="http://localhost:3000")
+
+
 class Settings(
     AppSettings,
     SQLiteSettings,
@@ -141,6 +146,7 @@ class Settings(
     DefaultRateLimitSettings,
     CRUDAdminSettings,
     EnvironmentSettings,
+    URLS,
 ):
     pass
 

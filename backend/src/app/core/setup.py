@@ -8,6 +8,7 @@ import redis.asyncio as redis
 from arq import create_pool
 from arq.connections import RedisSettings
 from fastapi import APIRouter, Depends, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import get_redoc_html, get_swagger_ui_html
 from fastapi.openapi.utils import get_openapi
 
@@ -29,6 +30,18 @@ from .config import (
 from .db.database import Base
 from .db.database import async_engine as engine
 from .utils import cache, queue
+
+
+def setup_cors(app: FastAPI):
+    origins = [settings.BACKEND_URL, settings.FRONTEND_URL]
+
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 
 # -------------- database --------------
@@ -201,6 +214,7 @@ def create_application(
         lifespan = lifespan_factory(settings, create_tables_on_start=create_tables_on_start)
 
     application = FastAPI(lifespan=lifespan, **kwargs)
+    setup_cors(application)
     application.include_router(router)
 
     if isinstance(settings, ClientSideCacheSettings):
