@@ -214,7 +214,6 @@ def create_application(
         lifespan = lifespan_factory(settings, create_tables_on_start=create_tables_on_start)
 
     application = FastAPI(lifespan=lifespan, **kwargs)
-    setup_cors(application)
     application.include_router(router)
 
     if isinstance(settings, ClientSideCacheSettings):
@@ -241,4 +240,5 @@ def create_application(
 
             application.include_router(docs_router)
 
+    setup_cors(application)
     return application

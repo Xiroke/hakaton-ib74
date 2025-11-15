@@ -4,6 +4,7 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 
+import { refreshAccessTokenApiV1RefreshPost } from '@/api/generated'
 import { SidebarProvider } from '@/components/ui/sidebar'
 
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
@@ -13,6 +14,14 @@ interface MyRouterContext {
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
+  beforeLoad: async () => {
+    const token = await refreshAccessTokenApiV1RefreshPost({
+      credentials: 'include',
+    })
+    if (token.data) {
+      localStorage.setItem('accessToken', token.data.access_token)
+    }
+  },
   component: () => (
     <>
       <SidebarProvider>

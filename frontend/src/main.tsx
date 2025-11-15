@@ -2,9 +2,10 @@ import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 
+import { client } from './api/generated/client.gen.ts'
 import * as TanStackQueryProvider from './integrations/tanstack-query/root-provider.tsx'
-import reportWebVitals from './reportWebVitals.ts'
 import './styles.css'
+import reportWebVitals from './reportWebVitals.ts'
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
 
@@ -20,6 +21,11 @@ const router = createRouter({
   defaultStructuralSharing: true,
   routeTree,
   scrollRestoration: true,
+})
+
+client.setConfig({
+  auth: () => localStorage.getItem('accessToken') || '',
+  credentials: 'include',
 })
 
 // Register the router instance for type safety

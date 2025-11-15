@@ -11,8 +11,14 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
+import { Route as DashboardScanRouteImport } from './routes/dashboard/scan'
+import { Route as DashboardReportsHistoryRouteImport } from './routes/dashboard/reports-history'
+import { Route as DashboardReportRouteImport } from './routes/dashboard/report'
+import { Route as DashboardProfileRouteImport } from './routes/dashboard/profile'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -24,46 +30,124 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRouteRoute = DashboardRouteRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardIndexRoute = DashboardIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
   id: '/demo/tanstack-query',
   path: '/demo/tanstack-query',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardScanRoute = DashboardScanRouteImport.update({
+  id: '/scan',
+  path: '/scan',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardReportsHistoryRoute = DashboardReportsHistoryRouteImport.update({
+  id: '/reports-history',
+  path: '/reports-history',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardReportRoute = DashboardReportRouteImport.update({
+  id: '/report',
+  path: '/report',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardProfileRoute = DashboardProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
+  '/dashboard/report': typeof DashboardReportRoute
+  '/dashboard/reports-history': typeof DashboardReportsHistoryRoute
+  '/dashboard/scan': typeof DashboardScanRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
+  '/dashboard/report': typeof DashboardReportRoute
+  '/dashboard/reports-history': typeof DashboardReportsHistoryRoute
+  '/dashboard/scan': typeof DashboardScanRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/dashboard': typeof DashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
+  '/dashboard/profile': typeof DashboardProfileRoute
+  '/dashboard/report': typeof DashboardReportRoute
+  '/dashboard/reports-history': typeof DashboardReportsHistoryRoute
+  '/dashboard/scan': typeof DashboardScanRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/dashboard/': typeof DashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/signup' | '/demo/tanstack-query'
+  fullPaths:
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/signup'
+    | '/dashboard/profile'
+    | '/dashboard/report'
+    | '/dashboard/reports-history'
+    | '/dashboard/scan'
+    | '/demo/tanstack-query'
+    | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/signup' | '/demo/tanstack-query'
-  id: '__root__' | '/' | '/login' | '/signup' | '/demo/tanstack-query'
+  to:
+    | '/'
+    | '/login'
+    | '/signup'
+    | '/dashboard/profile'
+    | '/dashboard/report'
+    | '/dashboard/reports-history'
+    | '/dashboard/scan'
+    | '/demo/tanstack-query'
+    | '/dashboard'
+  id:
+    | '__root__'
+    | '/'
+    | '/dashboard'
+    | '/login'
+    | '/signup'
+    | '/dashboard/profile'
+    | '/dashboard/report'
+    | '/dashboard/reports-history'
+    | '/dashboard/scan'
+    | '/demo/tanstack-query'
+    | '/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
   LoginRoute: typeof LoginRoute
   SignupRoute: typeof SignupRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
@@ -85,12 +169,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/': {
+      id: '/dashboard/'
+      path: '/'
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof DashboardIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
     '/demo/tanstack-query': {
       id: '/demo/tanstack-query'
@@ -99,11 +197,60 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoTanstackQueryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard/scan': {
+      id: '/dashboard/scan'
+      path: '/scan'
+      fullPath: '/dashboard/scan'
+      preLoaderRoute: typeof DashboardScanRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/reports-history': {
+      id: '/dashboard/reports-history'
+      path: '/reports-history'
+      fullPath: '/dashboard/reports-history'
+      preLoaderRoute: typeof DashboardReportsHistoryRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/report': {
+      id: '/dashboard/report'
+      path: '/report'
+      fullPath: '/dashboard/report'
+      preLoaderRoute: typeof DashboardReportRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/profile': {
+      id: '/dashboard/profile'
+      path: '/profile'
+      fullPath: '/dashboard/profile'
+      preLoaderRoute: typeof DashboardProfileRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
   }
 }
 
+interface DashboardRouteRouteChildren {
+  DashboardProfileRoute: typeof DashboardProfileRoute
+  DashboardReportRoute: typeof DashboardReportRoute
+  DashboardReportsHistoryRoute: typeof DashboardReportsHistoryRoute
+  DashboardScanRoute: typeof DashboardScanRoute
+  DashboardIndexRoute: typeof DashboardIndexRoute
+}
+
+const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
+  DashboardProfileRoute: DashboardProfileRoute,
+  DashboardReportRoute: DashboardReportRoute,
+  DashboardReportsHistoryRoute: DashboardReportsHistoryRoute,
+  DashboardScanRoute: DashboardScanRoute,
+  DashboardIndexRoute: DashboardIndexRoute,
+}
+
+const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
+  DashboardRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DashboardRouteRoute: DashboardRouteRouteWithChildren,
   LoginRoute: LoginRoute,
   SignupRoute: SignupRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,

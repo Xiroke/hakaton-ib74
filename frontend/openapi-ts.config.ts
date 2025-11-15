@@ -7,11 +7,11 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 // load .env from parent
-dotenv.config({ path: path.resolve(__dirname, '../.env') })
+dotenv.config({ path: path.resolve(__dirname, '.env') })
 
 export default defineConfig({
   input: {
-    path: process.env.VITE_BACKEND_URL + '/api/openapi.json',
+    path: process.env.VITE_BACKEND_URL + '/openapi.json',
   },
   output: 'src/api/generated',
   plugins: ['@tanstack/react-query'],

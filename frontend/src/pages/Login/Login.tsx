@@ -1,7 +1,5 @@
-import { clsx } from 'clsx'
-import { memo } from 'react'
-
 import type { FC } from 'react'
+
 import { LoginForm } from '@/components/login-form'
 
 export const Login: FC = () => {
