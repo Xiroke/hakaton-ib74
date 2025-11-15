@@ -1,6 +1,6 @@
 import { useForm } from '@tanstack/react-form'
 import { useMutation } from '@tanstack/react-query'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 
 import { writeUserApiV1UserPostMutation } from '@/api/generated/@tanstack/react-query.gen'
 import { Button } from '@/components/ui/button'
@@ -21,6 +21,9 @@ import { Input } from '@/components/ui/input'
 
 export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   const signupMutation = useMutation(writeUserApiV1UserPostMutation())
+  const navigate = useNavigate({
+    from: '/signup',
+  })
 
   const form = useForm({
     defaultValues: {
@@ -40,6 +43,8 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
             username: value.username,
           },
         })
+
+        navigate({ to: '/login' })
       }
       catch (error) {
         // Error handling is done by the mutation
@@ -51,9 +56,9 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
   return (
     <Card {...props}>
       <CardHeader>
-        <CardTitle>Create an account</CardTitle>
+        <CardTitle>Создать учетную запись</CardTitle>
         <CardDescription>
-          Enter your information below to create your account
+          Введите о себе информацию, чтобы создать учетную запись
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -69,18 +74,18 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
               name="name"
               validators={{
                 onChange: ({ value }) =>
-                  !value ? 'Full name is required' : undefined,
+                  !value ? 'ФИО обязательно' : undefined,
               }}
             >
               {field => (
                 <Field>
-                  <FieldLabel htmlFor={field.name}>Full Name</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>ФИО</FieldLabel>
                   <Input
                     id={field.name}
                     name={field.name}
                     onBlur={field.handleBlur}
                     onChange={e => field.handleChange(e.target.value)}
-                    placeholder="John Doe"
+                    placeholder="Иванов Иван Иванович"
                     required
                     type="text"
                     value={field.state.value}
@@ -97,18 +102,18 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
               name="username"
               validators={{
                 onChange: ({ value }) =>
-                  !value ? 'Username is required' : undefined,
+                  !value ? 'Имя пользователя обязательно' : undefined,
               }}
             >
               {field => (
                 <Field>
-                  <FieldLabel htmlFor={field.name}>Username</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Имя пользователя</FieldLabel>
                   <Input
                     id={field.name}
                     name={field.name}
                     onBlur={field.handleBlur}
                     onChange={e => field.handleChange(e.target.value)}
-                    placeholder="johndoe"
+                    placeholder="username"
                     required
                     type="text"
                     value={field.state.value}
@@ -125,9 +130,9 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
               name="email"
               validators={{
                 onChange: ({ value }) => {
-                  if (!value) return 'Email is required'
+                  if (!value) return 'Почта обязательна'
                   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                    return 'Please enter a valid email address'
+                    return 'Пожалуйста, введите корректный адрес электронной почты.'
                   }
                   return undefined
                 },
@@ -147,8 +152,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                     value={field.state.value}
                   />
                   <FieldDescription>
-                    We&apos;ll use this to contact you. We will not share your
-                    email with anyone else.
+                    Мы используем его для связи с вами. Мы не передадим ваш адрес электронной почты другим людям.
                   </FieldDescription>
                   {field.state.meta.errors.length > 0 && (
                     <FieldDescription className="text-destructive">
@@ -162,9 +166,9 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
               name="password"
               validators={{
                 onChange: ({ value }) => {
-                  if (!value) return 'Password is required'
+                  if (!value) return 'Пароль обязателен'
                   if (value.length < 8) {
-                    return 'Password must be at least 8 characters long'
+                    return 'Пароль должен быть длиной не менее 8 символов.'
                   }
                   return undefined
                 },
@@ -172,18 +176,19 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
             >
               {field => (
                 <Field>
-                  <FieldLabel htmlFor={field.name}>Password</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Пароль</FieldLabel>
                   <Input
                     id={field.name}
                     name={field.name}
                     onBlur={field.handleBlur}
                     onChange={e => field.handleChange(e.target.value)}
+                    placeholder="***********"
                     required
                     type="password"
                     value={field.state.value}
                   />
                   <FieldDescription>
-                    Must be at least 8 characters long.
+                    Должен быть длиной не менее 8 символов.
                   </FieldDescription>
                   {field.state.meta.errors.length > 0 && (
                     <FieldDescription className="text-destructive">
@@ -196,11 +201,16 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
             <form.Field
               name="confirmPassword"
               validators={{
-                onChange: ({ form, value }) => {
-                  if (!value) return 'Please confirm your password'
-                  const password = form.getFieldValue('password')
+                onChange: ({ fieldApi, value }) => {
+                  if (!value) return 'Подтвердите пароль'
+
+                  const allValues = fieldApi.form.state.values as {
+                    password: string
+                  }
+                  const password = allValues.password
+
                   if (value !== password) {
-                    return 'Passwords do not match'
+                    return 'Пароли не совпадают'
                   }
                   return undefined
                 },
@@ -208,18 +218,19 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
             >
               {field => (
                 <Field>
-                  <FieldLabel htmlFor={field.name}>Confirm Password</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Подтвердите пароль</FieldLabel>
                   <Input
                     id={field.name}
                     name={field.name}
                     onBlur={field.handleBlur}
                     onChange={e => field.handleChange(e.target.value)}
+                    placeholder="***********"
                     required
                     type="password"
                     value={field.state.value}
                   />
                   <FieldDescription>
-                    Please confirm your password.
+                    Пожалуйста подтвердите пароль.
                   </FieldDescription>
                   {field.state.meta.errors.length > 0 && (
                     <FieldDescription className="text-destructive">
@@ -234,7 +245,7 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
                 <FieldDescription className="text-destructive">
                   {signupMutation.error instanceof Error
                     ? signupMutation.error.message
-                    : 'Signup failed. Please check your information.'}
+                    : 'Регистрация не удалась. Проверьте введенные данные.'}
                 </FieldDescription>
               </Field>
             )}
@@ -242,13 +253,13 @@ export function SignupForm({ ...props }: React.ComponentProps<typeof Card>) {
               <Field>
                 <Button disabled={signupMutation.isPending} type="submit">
                   {signupMutation.isPending
-                    ? 'Creating account...'
-                    : 'Create Account'}
+                    ? 'Регистрируем...'
+                    : 'Зарегистрироваться'}
                 </Button>
                 <FieldDescription className="px-6 text-center">
-                  Already have an account?
+                  У вас уже есть своя учетная запись?
                   {' '}
-                  <Link to="/login">Sign in</Link>
+                  <Link to="/login">Войти</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

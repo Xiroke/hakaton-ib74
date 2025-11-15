@@ -60,9 +60,9 @@ export function LoginForm({
     <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle>Login to your account</CardTitle>
+          <CardTitle>Войти в свою учетную запись</CardTitle>
           <CardDescription>
-            Enter your username below to login to your account
+            Введите имя пользователя, чтобы войти в свою учетную запись
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -78,12 +78,12 @@ export function LoginForm({
                 name="username"
                 validators={{
                   onChange: ({ value }) =>
-                    !value ? 'Username is required' : undefined,
+                    !value ? 'Имя пользователя обязательно' : undefined,
                 }}
               >
                 {field => (
                   <Field>
-                    <FieldLabel htmlFor={field.name}>Username</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>Имя пользователя</FieldLabel>
                     <Input
                       id={field.name}
                       name={field.name}
@@ -106,18 +106,18 @@ export function LoginForm({
                 name="password"
                 validators={{
                   onChange: ({ value }) =>
-                    !value ? 'Password is required' : undefined,
+                    !value ? 'Пароль обязателен' : undefined,
                 }}
               >
                 {field => (
                   <Field>
                     <div className="flex items-center">
-                      <FieldLabel htmlFor={field.name}>Password</FieldLabel>
+                      <FieldLabel htmlFor={field.name}>Пароль</FieldLabel>
                       <a
                         className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
                         href="#"
                       >
-                        Forgot your password?
+                        Забыли свой пароль?
                       </a>
                     </div>
                     <Input
@@ -143,18 +143,18 @@ export function LoginForm({
                   <FieldDescription className="text-destructive">
                     {loginMutation.error instanceof Error
                       ? loginMutation.error.message
-                      : 'Login failed. Please check your credentials.'}
+                      : 'Не удалось войти. Пожалуйста проверти свои учетные данные'}
                   </FieldDescription>
                 </Field>
               )}
               <Field>
                 <Button disabled={loginMutation.isPending} type="submit">
-                  {loginMutation.isPending ? 'Logging in...' : 'Login'}
+                  {loginMutation.isPending ? 'Выполняется вход...' : 'Войти'}
                 </Button>
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account?
+                  У вас нет учетной записи?
                   {' '}
-                  <Link to="/signup">Sign up</Link>
+                  <Link to="/signup">Зарегистрироваться</Link>
                 </FieldDescription>
               </Field>
             </FieldGroup>

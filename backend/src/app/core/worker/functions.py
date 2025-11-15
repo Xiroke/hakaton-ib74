@@ -1,10 +1,7 @@
 import asyncio
 import logging
 
-import uvloop
 from arq.worker import Worker
-
-asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
@@ -22,3 +19,7 @@ async def startup(ctx: Worker) -> None:
 
 async def shutdown(ctx: Worker) -> None:
     logging.info("Worker end")
+
+
+async def scan_task(ctx: Worker) -> None:
+    return {"status": "done", "message": "scan task"}
