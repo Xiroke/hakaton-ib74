@@ -1,4 +1,5 @@
-import type { FC } from 'react'
+import { useParams } from '@tanstack/react-router'
+import { type FC } from 'react'
 
 import {
   Table,
@@ -10,43 +11,20 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-const vulnerabilities = [
-  {
-    cve: 'CVE-2023-12345',
-    description: 'Позволяет выполнить произвольные SQL-запросы через уязвимые параметры.',
-    name: 'SQL Injection',
-    severity: 'Критическая',
-  },
-  {
-    cve: 'CVE-2022-45216',
-    description: 'Вставка вредоносного JavaScript в параметры запросов.',
-    name: 'XSS (Reflected)',
-    severity: 'Возможная',
-  },
-  {
-    cve: 'CVE-2024-01452',
-    description: 'Злоумышленник получает доступ выше предусмотренного уровня.',
-    name: 'Privilege Escalation',
-    severity: 'Критическая',
-  },
-  {
-    cve: 'CVE-2021-31703',
-    description: 'Чтение файлов вне корневой директории через обход пути.',
-    name: 'Directory Traversal',
-    severity: 'Возможная',
-  },
-  {
-    cve: 'CVE-2023-22118',
-    description: 'Выполнение действий от имени пользователя без его ведома.',
-    name: 'CSRF',
-    severity: 'Возможная',
-  },
-]
+type Vuln = {
+  cve: string
+  description: string
+  name: string
+  severity: string
+}
 
 export const Report: FC = () => {
+  const { id } = useParams({ from: '/dashboard/report/$id' })
+  const vulns = []
+
   return (
-    <div className="">
-      <h3>Найденнные уязвимости</h3>
+    <div>
+      <h3 className="text-lg font-semibold mb-4">Найденные уязвимости</h3>
       <Table>
         <TableHeader>
           <TableRow>
@@ -56,34 +34,36 @@ export const Report: FC = () => {
             <TableHead className="w-[160px]">Степень</TableHead>
           </TableRow>
         </TableHeader>
-
         <TableBody>
-          {vulnerabilities.map(vuln => (
-            <TableRow key={vuln.cve}>
-              <TableCell className="font-medium">{vuln.name}</TableCell>
-              <TableCell>{vuln.description}</TableCell>
+          {vulns.map(v => (
+            <TableRow key={v.cve}>
+              <TableCell className="font-medium">{v.name}</TableCell>
+              <TableCell>{v.description}</TableCell>
               <TableCell>
                 <a
                   className="text-primary underline"
-                  href={`https://cve.mitre.org/cgi-bin/cvename.cgi?name=${vuln.cve}`}
+                  href={`https://cve.mitre.org/cgi-bin/cvename.cgi?name=${v.cve}`}
                   rel="noreferrer"
                   target="_blank"
                 >
-                  {vuln.cve}
+                  {v.cve}
                 </a>
               </TableCell>
-              <TableCell className={vuln.severity === 'Критическая' ? 'text-red-600' : 'text-yellow-600'}>
-                {vuln.severity}
+              <TableCell
+                className={
+                  v.severity === 'Критическая' ? 'text-red-600' : 'text-yellow-600'
+                }
+              >
+                {v.severity}
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
-
         <TableFooter>
           <TableRow>
             <TableCell colSpan={4}>
               Всего найдено:
-              {vulnerabilities.length}
+              {vulns.length}
             </TableCell>
           </TableRow>
         </TableFooter>

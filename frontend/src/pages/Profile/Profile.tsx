@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button'
 
 export const Profile: FC = () => {
   const navigate = useNavigate({ from: '/dashboard/profile' })
-  const { data, error, isLoading } = useQuery(
+  const { data } = useQuery(
     readUsersMeApiV1UserMeGetOptions(),
   )
 

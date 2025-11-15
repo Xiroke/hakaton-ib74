@@ -6,6 +6,7 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 
 import { refreshAccessTokenApiV1RefreshPost } from '@/api/generated'
 import { SidebarProvider } from '@/components/ui/sidebar'
+import { Toaster } from '@/components/ui/sonner'
 
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
@@ -37,6 +38,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   },
   component: () => (
     <>
+      <Toaster position="top-center" />
       <SidebarProvider>
         <Outlet />
       </SidebarProvider>

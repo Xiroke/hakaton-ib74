@@ -17,8 +17,8 @@ import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as DashboardScanRouteImport } from './routes/dashboard/scan'
 import { Route as DashboardReportsHistoryRouteImport } from './routes/dashboard/reports-history'
-import { Route as DashboardReportRouteImport } from './routes/dashboard/report'
 import { Route as DashboardProfileRouteImport } from './routes/dashboard/profile'
+import { Route as DashboardReportIdRouteImport } from './routes/dashboard/report.$id'
 
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
@@ -60,14 +60,14 @@ const DashboardReportsHistoryRoute = DashboardReportsHistoryRouteImport.update({
   path: '/reports-history',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
-const DashboardReportRoute = DashboardReportRouteImport.update({
-  id: '/report',
-  path: '/report',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
 const DashboardProfileRoute = DashboardProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardReportIdRoute = DashboardReportIdRouteImport.update({
+  id: '/report/$id',
+  path: '/report/$id',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
 
@@ -77,22 +77,22 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/dashboard/profile': typeof DashboardProfileRoute
-  '/dashboard/report': typeof DashboardReportRoute
   '/dashboard/reports-history': typeof DashboardReportsHistoryRoute
   '/dashboard/scan': typeof DashboardScanRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/report/$id': typeof DashboardReportIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/dashboard/profile': typeof DashboardProfileRoute
-  '/dashboard/report': typeof DashboardReportRoute
   '/dashboard/reports-history': typeof DashboardReportsHistoryRoute
   '/dashboard/scan': typeof DashboardScanRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/dashboard/report/$id': typeof DashboardReportIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -101,11 +101,11 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/signup': typeof SignupRoute
   '/dashboard/profile': typeof DashboardProfileRoute
-  '/dashboard/report': typeof DashboardReportRoute
   '/dashboard/reports-history': typeof DashboardReportsHistoryRoute
   '/dashboard/scan': typeof DashboardScanRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/dashboard/report/$id': typeof DashboardReportIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -115,22 +115,22 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/dashboard/profile'
-    | '/dashboard/report'
     | '/dashboard/reports-history'
     | '/dashboard/scan'
     | '/demo/tanstack-query'
     | '/dashboard/'
+    | '/dashboard/report/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
     | '/signup'
     | '/dashboard/profile'
-    | '/dashboard/report'
     | '/dashboard/reports-history'
     | '/dashboard/scan'
     | '/demo/tanstack-query'
     | '/dashboard'
+    | '/dashboard/report/$id'
   id:
     | '__root__'
     | '/'
@@ -138,11 +138,11 @@ export interface FileRouteTypes {
     | '/login'
     | '/signup'
     | '/dashboard/profile'
-    | '/dashboard/report'
     | '/dashboard/reports-history'
     | '/dashboard/scan'
     | '/demo/tanstack-query'
     | '/dashboard/'
+    | '/dashboard/report/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -211,13 +211,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardReportsHistoryRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
-    '/dashboard/report': {
-      id: '/dashboard/report'
-      path: '/report'
-      fullPath: '/dashboard/report'
-      preLoaderRoute: typeof DashboardReportRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
     '/dashboard/profile': {
       id: '/dashboard/profile'
       path: '/profile'
@@ -225,23 +218,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardProfileRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
+    '/dashboard/report/$id': {
+      id: '/dashboard/report/$id'
+      path: '/report/$id'
+      fullPath: '/dashboard/report/$id'
+      preLoaderRoute: typeof DashboardReportIdRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
   }
 }
 
 interface DashboardRouteRouteChildren {
   DashboardProfileRoute: typeof DashboardProfileRoute
-  DashboardReportRoute: typeof DashboardReportRoute
   DashboardReportsHistoryRoute: typeof DashboardReportsHistoryRoute
   DashboardScanRoute: typeof DashboardScanRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardReportIdRoute: typeof DashboardReportIdRoute
 }
 
 const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardProfileRoute: DashboardProfileRoute,
-  DashboardReportRoute: DashboardReportRoute,
   DashboardReportsHistoryRoute: DashboardReportsHistoryRoute,
   DashboardScanRoute: DashboardScanRoute,
   DashboardIndexRoute: DashboardIndexRoute,
+  DashboardReportIdRoute: DashboardReportIdRoute,
 }
 
 const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(

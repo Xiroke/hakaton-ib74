@@ -355,6 +355,54 @@ export type ReadyCheck = {
 };
 
 /**
+ * ScanCreate
+ */
+export type ScanCreate = {
+    /**
+     * Host
+     */
+    host: string;
+    /**
+     * Port
+     */
+    port: number;
+    /**
+     * Title
+     */
+    title: string;
+};
+
+/**
+ * ScanRead
+ */
+export type ScanRead = {
+    /**
+     * Id
+     */
+    id: string;
+    /**
+     * Host
+     */
+    host: string;
+    /**
+     * Port
+     */
+    port: number;
+    /**
+     * Title
+     */
+    title: string;
+    /**
+     * Status
+     */
+    status: string;
+    /**
+     * Created At
+     */
+    created_at: string;
+};
+
+/**
  * TierCreate
  */
 export type TierCreate = {
@@ -1547,3 +1595,104 @@ export type PatchRateLimitApiV1TierTierNameRateLimitIdPatchResponses = {
 };
 
 export type PatchRateLimitApiV1TierTierNameRateLimitIdPatchResponse = PatchRateLimitApiV1TierTierNameRateLimitIdPatchResponses[keyof PatchRateLimitApiV1TierTierNameRateLimitIdPatchResponses];
+
+export type CreateScanApiV1ScanPostData = {
+    body: ScanCreate;
+    path?: never;
+    query?: never;
+    url: '/api/v1/scan';
+};
+
+export type CreateScanApiV1ScanPostErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type CreateScanApiV1ScanPostError = CreateScanApiV1ScanPostErrors[keyof CreateScanApiV1ScanPostErrors];
+
+export type CreateScanApiV1ScanPostResponses = {
+    /**
+     * Successful Response
+     */
+    200: ScanRead;
+};
+
+export type CreateScanApiV1ScanPostResponse = CreateScanApiV1ScanPostResponses[keyof CreateScanApiV1ScanPostResponses];
+
+export type GetMyScansApiV1ScanMyGetData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/scan/my';
+};
+
+export type GetMyScansApiV1ScanMyGetResponses = {
+    /**
+     * Response Get My Scans Api V1 Scan My Get
+     *
+     * Successful Response
+     */
+    200: Array<ScanRead>;
+};
+
+export type GetMyScansApiV1ScanMyGetResponse = GetMyScansApiV1ScanMyGetResponses[keyof GetMyScansApiV1ScanMyGetResponses];
+
+export type DeleteScanApiV1ScanTaskIdDeleteData = {
+    body?: never;
+    path: {
+        /**
+         * Task Id
+         */
+        task_id: string;
+    };
+    query?: never;
+    url: '/api/v1/scan/{task_id}';
+};
+
+export type DeleteScanApiV1ScanTaskIdDeleteErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type DeleteScanApiV1ScanTaskIdDeleteError = DeleteScanApiV1ScanTaskIdDeleteErrors[keyof DeleteScanApiV1ScanTaskIdDeleteErrors];
+
+export type DeleteScanApiV1ScanTaskIdDeleteResponses = {
+    /**
+     * Successful Response
+     */
+    200: unknown;
+};
+
+export type ReadScanApiV1ScanTaskIdGetData = {
+    body?: never;
+    path: {
+        /**
+         * Task Id
+         */
+        task_id: string;
+    };
+    query?: never;
+    url: '/api/v1/scan/{task_id}';
+};
+
+export type ReadScanApiV1ScanTaskIdGetErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type ReadScanApiV1ScanTaskIdGetError = ReadScanApiV1ScanTaskIdGetErrors[keyof ReadScanApiV1ScanTaskIdGetErrors];
+
+export type ReadScanApiV1ScanTaskIdGetResponses = {
+    /**
+     * Successful Response
+     */
+    200: ScanRead;
+};
+
+export type ReadScanApiV1ScanTaskIdGetResponse = ReadScanApiV1ScanTaskIdGetResponses[keyof ReadScanApiV1ScanTaskIdGetResponses];
