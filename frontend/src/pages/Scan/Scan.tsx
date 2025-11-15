@@ -2,7 +2,7 @@ import { useForm } from '@tanstack/react-form'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-import { createScanApiV1ScanPostMutation } from '@/api/generated/@tanstack/react-query.gen'
+import { apiStartScanApiScanPostMutation } from '@/api/generated/@tanstack/react-query.gen'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -21,21 +21,16 @@ import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
 
 export const Scan = ({ className, ...props }: React.ComponentProps<'div'>) => {
-  const scanMutation = useMutation(createScanApiV1ScanPostMutation())
+  const scanMutation = useMutation(apiStartScanApiScanPostMutation())
 
   const form = useForm({
     defaultValues: {
-      host: '',
-      port: '',
+      target: '',
       title: '',
     },
     onSubmit: async ({ value }) => {
       try {
-        await scanMutation.mutateAsync({ body: {
-          host: value.host,
-          port: Number(value.port),
-          title: value.title,
-        } })
+        await scanMutation.mutateAsync({ body: { target: value.target, title: value.title } })
         toast.success('Сканирование запущено')
       }
       catch (error) {
@@ -91,7 +86,7 @@ export const Scan = ({ className, ...props }: React.ComponentProps<'div'>) => {
 
               {/* Target */}
               <form.Field
-                name="host"
+                name="target"
                 validators={{
                   onChange: ({ value }) =>
                     !value ? 'Цель сканирования обязательна' : undefined,
@@ -106,41 +101,6 @@ export const Scan = ({ className, ...props }: React.ComponentProps<'div'>) => {
                       onBlur={field.handleBlur}
                       onChange={e => field.handleChange(e.target.value)}
                       placeholder="Введите Домен или IP"
-                      value={field.state.value}
-                    />
-                    {field.state.meta.errors.length > 0 && (
-                      <FieldDescription className="text-destructive">
-                        {field.state.meta.errors[0]}
-                      </FieldDescription>
-                    )}
-                  </Field>
-                )}
-              </form.Field>
-
-              {/* Port */}
-              <form.Field
-                name="port"
-                validators={{
-                  onChange: ({ value }) => {
-                    const portNum = Number(value)
-                    if (!value) return 'Порт обязателен'
-                    if (!/^\d+$/.test(value)) return 'Порт должен быть числом'
-                    if (portNum < 1 || portNum > 65535) return 'Порт должен быть от 1 до 65535'
-                  },
-                }}
-              >
-                {field => (
-                  <Field>
-                    <FieldLabel htmlFor={field.name}>Порт</FieldLabel>
-                    <Input
-                      id={field.name}
-                      max={65535}
-                      min={1}
-                      name={field.name}
-                      onBlur={field.handleBlur}
-                      onChange={e => field.handleChange(e.target.value)}
-                      placeholder="Введите порт"
-                      type="number"
                       value={field.state.value}
                     />
                     {field.state.meta.errors.length > 0 && (

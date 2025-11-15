@@ -4,8 +4,7 @@ from pydantic import BaseModel
 
 
 class ScanCreate(BaseModel):
-    host: str
-    port: int
+    target: str
     title: str
 
 
@@ -17,8 +16,7 @@ class ScanCreateInternal(ScanCreate):
 
 class ScanRead(BaseModel):
     id: str
-    host: str
-    port: int
+    target: str
     title: str
     status: str
     created_at: datetime

@@ -1,6 +1,15 @@
+import { useQuery } from '@tanstack/react-query'
 import { useParams } from '@tanstack/react-router'
 import { type FC } from 'react'
 
+import { apiGetLogApiScanScanIdLogGetOptions } from '@/api/generated/@tanstack/react-query.gen'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from '@/components/ui/collapsible'
 import {
   Table,
   TableBody,
@@ -21,10 +30,32 @@ type Vuln = {
 export const Report: FC = () => {
   const { id } = useParams({ from: '/dashboard/report/$id' })
   const vulns = []
+  const { data: reportLogs, isSuccess, refetch } = useQuery(apiGetLogApiScanScanIdLogGetOptions({ path: { scan_id: Number(id) } }))
 
   return (
     <div>
-      <h3 className="text-lg font-semibold mb-4">Найденные уязвимости</h3>
+      <div className="flex justify-between">
+        <h3 className="text-lg font-semibold mb-4">Логи сканирования</h3>
+        <Button onClick={() => refetch()}>Обновить</Button>
+      </div>
+
+      {isSuccess && (
+        <Card>
+          <Collapsible>
+            <CardContent className="whitespace-pre-wrap break-all">
+              {reportLogs.slice(0, 500)}
+              <CollapsibleContent className="inline">{reportLogs.slice(500, reportLogs.length)}</CollapsibleContent>
+            </CardContent>
+            <CollapsibleTrigger asChild>
+              <div className="text-center">
+                <Button variant="ghost">Показать полностью</Button>
+              </div>
+            </CollapsibleTrigger>
+          </Collapsible>
+        </Card>
+      )}
+
+      <h3 className="text-lg font-semibold mt-10 mb-4">Найденные уязвимости</h3>
       <Table>
         <TableHeader>
           <TableRow>

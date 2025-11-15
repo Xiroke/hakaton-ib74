@@ -2,6 +2,6 @@ from fastcrud import FastCRUD
 
 from ..models.scan import Scan
 
-crud_scans = FastCRUD(Scan)
+crud_scan = FastCRUD(Scan)
 
-__all__ = ["crud_scans"]
+__all__ = ["crud_scan"]

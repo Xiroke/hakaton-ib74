@@ -3,14 +3,14 @@ import type { FC } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 
-import { getMyScansApiV1ScanMyGetOptions } from '@/api/generated/@tanstack/react-query.gen'
+import { getMyScansApiScanMyGetOptions } from '@/api/generated/@tanstack/react-query.gen'
 import {
   Table, TableBody, TableCell, TableHead,
   TableHeader, TableRow,
 } from '@/components/ui/table'
 
 export const ReportsHistory: FC = () => {
-  const scans = useQuery(getMyScansApiV1ScanMyGetOptions())
+  const scans = useQuery(getMyScansApiScanMyGetOptions())
 
   return (
     <div>

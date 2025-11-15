@@ -1,48 +1,67 @@
-from sqlalchemy.orm import Session
+from fastcrud import FastCRUD
+from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.models import Scan
+from src.app.models import Scan
 
-
-def create_scan(db: Session, target: str) -> Scan:
-    scan = Scan(target=target)
-    db.add(scan)
-    db.commit()
-    db.refresh(scan)
-    return scan
+scan_crud = FastCRUD(Scan)
 
 
-def update_scan_status(db: Session, scan_id: int, status: str):
-    scan = db.query(Scan).filter(Scan.id == scan_id).first()
-    if scan:
-        scan.status = status
-        db.commit()
+# -------------------------------------------------------------
+# Создание
+# -------------------------------------------------------------
+async def create_scan(db: AsyncSession, target: str) -> Scan:
+    obj = await scan_crud.create(db=db, object={"target": target})
+    await db.commit()
+    return obj
 
 
-def append_scan_output(db: Session, scan_id: int, output: str):
-    scan = db.query(Scan).filter(Scan.id == scan_id).first()
-    if scan:
-        scan.nmap_output += output
-        db.commit()
+# -------------------------------------------------------------
+# Статус
+# -------------------------------------------------------------
+async def update_scan_status(db: AsyncSession, scan_id: str, status: str):
+    await scan_crud.update(db=db, id=scan_id, object={"status": status})
+    await db.commit()
 
 
-def append_nuclei_output(db: Session, scan_id: int, output: str):
-    scan = db.query(Scan).filter(Scan.id == scan_id).first()
-    if scan:
-        scan.nuclei_output += output
-        db.commit()
+# -------------------------------------------------------------
+# Логи NMAP
+# -------------------------------------------------------------
+async def append_scan_output(db: AsyncSession, scan_id: str, output: str):
+    scan = await scan_crud.get(db=db, id=scan_id)
+
+    new_value = (scan.nmap_output or "") + output
+
+    await scan_crud.update(db=db, id=scan_id, object={"nmap_output": new_value})
+    await db.commit()
 
 
-# ✅ Новая функция для лога эксплуатации
-def append_exploit_log(db: Session, scan_id: int, log_entry: str):
-    scan = db.query(Scan).filter(Scan.id == scan_id).first()
-    if scan:
-        scan.exploit_log += log_entry + "\n"
-        db.commit()
+# -------------------------------------------------------------
+# Логи Nuclei
+# -------------------------------------------------------------
+async def append_nuclei_output(db: AsyncSession, scan_id: str, output: str):
+    scan = await scan_crud.get(db=db, id=scan_id)
+
+    new_value = (scan.nuclei_output or "") + output
+
+    await scan_crud.update(db=db, id=scan_id, object={"nuclei_output": new_value})
+    await db.commit()
 
 
-# ✅ Новая функция для сохранения отчета
-def save_report(db: Session, scan_id: int, report_text: str):
-    scan = db.query(Scan).filter(Scan.id == scan_id).first()
-    if scan:
-        scan.report_content = report_text
-        db.commit()
+# -------------------------------------------------------------
+# Логи exploitation
+# -------------------------------------------------------------
+async def append_exploit_log(db: AsyncSession, scan_id: str, log_entry: str):
+    scan = await scan_crud.get(db=db, id=scan_id)
+
+    new_value = (scan.exploit_log or "") + log_entry + "\n"
+
+    await scan_crud.update(db=db, id=scan_id, object={"exploit_log": new_value})
+    await db.commit()
+
+
+# -------------------------------------------------------------
+# Отчёт
+# -------------------------------------------------------------
+async def save_report(db: AsyncSession, scan_id: str, report_text: str):
+    await scan_crud.update(db=db, id=scan_id, object={"report_content": report_text})
+    await db.commit()

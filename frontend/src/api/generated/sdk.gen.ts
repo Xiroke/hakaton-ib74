@@ -2,7 +2,7 @@
 
 import { type Client, type Options as Options2, type TDataShape, urlSearchParamsBodySerializer } from './client';
 import { client } from './client.gen';
-import type { CreateScanApiV1ScanPostData, CreateScanApiV1ScanPostErrors, CreateScanApiV1ScanPostResponses, CreateTaskApiV1TasksTaskPostData, CreateTaskApiV1TasksTaskPostErrors, CreateTaskApiV1TasksTaskPostResponses, DeleteScanApiV1ScanTaskIdDeleteData, DeleteScanApiV1ScanTaskIdDeleteErrors, DeleteScanApiV1ScanTaskIdDeleteResponses, EraseDbPostApiV1UsernameDbPostIdDeleteData, EraseDbPostApiV1UsernameDbPostIdDeleteErrors, EraseDbPostApiV1UsernameDbPostIdDeleteResponses, EraseDbUserApiV1DbUserUsernameDeleteData, EraseDbUserApiV1DbUserUsernameDeleteErrors, EraseDbUserApiV1DbUserUsernameDeleteResponses, ErasePostApiV1UsernamePostIdDeleteData, ErasePostApiV1UsernamePostIdDeleteErrors, ErasePostApiV1UsernamePostIdDeleteResponses, EraseRateLimitApiV1TierTierNameRateLimitIdDeleteData, EraseRateLimitApiV1TierTierNameRateLimitIdDeleteErrors, EraseRateLimitApiV1TierTierNameRateLimitIdDeleteResponses, EraseTierApiV1TierNameDeleteData, EraseTierApiV1TierNameDeleteErrors, EraseTierApiV1TierNameDeleteResponses, EraseUserApiV1UserUsernameDeleteData, EraseUserApiV1UserUsernameDeleteErrors, EraseUserApiV1UserUsernameDeleteResponses, GetMyScansApiV1ScanMyGetData, GetMyScansApiV1ScanMyGetResponses, GetTaskApiV1TasksTaskTaskIdGetData, GetTaskApiV1TasksTaskTaskIdGetErrors, GetTaskApiV1TasksTaskTaskIdGetResponses, HealthApiV1HealthGetData, HealthApiV1HealthGetResponses, LoginForAccessTokenApiV1LoginPostData, LoginForAccessTokenApiV1LoginPostErrors, LoginForAccessTokenApiV1LoginPostResponses, LogoutApiV1LogoutPostData, LogoutApiV1LogoutPostErrors, LogoutApiV1LogoutPostResponses, PatchPostApiV1UsernamePostIdPatchData, PatchPostApiV1UsernamePostIdPatchErrors, PatchPostApiV1UsernamePostIdPatchResponses, PatchRateLimitApiV1TierTierNameRateLimitIdPatchData, PatchRateLimitApiV1TierTierNameRateLimitIdPatchErrors, PatchRateLimitApiV1TierTierNameRateLimitIdPatchResponses, PatchTierApiV1TierNamePatchData, PatchTierApiV1TierNamePatchErrors, PatchTierApiV1TierNamePatchResponses, PatchUserApiV1UserUsernamePatchData, PatchUserApiV1UserUsernamePatchErrors, PatchUserApiV1UserUsernamePatchResponses, PatchUserTierApiV1UserUsernameTierPatchData, PatchUserTierApiV1UserUsernameTierPatchErrors, PatchUserTierApiV1UserUsernameTierPatchResponses, ReadPostApiV1UsernamePostIdGetData, ReadPostApiV1UsernamePostIdGetErrors, ReadPostApiV1UsernamePostIdGetResponses, ReadPostsApiV1UsernamePostsGetData, ReadPostsApiV1UsernamePostsGetErrors, ReadPostsApiV1UsernamePostsGetResponses, ReadRateLimitApiV1TierTierNameRateLimitIdGetData, ReadRateLimitApiV1TierTierNameRateLimitIdGetErrors, ReadRateLimitApiV1TierTierNameRateLimitIdGetResponses, ReadRateLimitsApiV1TierTierNameRateLimitsGetData, ReadRateLimitsApiV1TierTierNameRateLimitsGetErrors, ReadRateLimitsApiV1TierTierNameRateLimitsGetResponses, ReadScanApiV1ScanTaskIdGetData, ReadScanApiV1ScanTaskIdGetErrors, ReadScanApiV1ScanTaskIdGetResponses, ReadTierApiV1TierNameGetData, ReadTierApiV1TierNameGetErrors, ReadTierApiV1TierNameGetResponses, ReadTiersApiV1TiersGetData, ReadTiersApiV1TiersGetErrors, ReadTiersApiV1TiersGetResponses, ReadUserApiV1UserUsernameGetData, ReadUserApiV1UserUsernameGetErrors, ReadUserApiV1UserUsernameGetResponses, ReadUserRateLimitsApiV1UserUsernameRateLimitsGetData, ReadUserRateLimitsApiV1UserUsernameRateLimitsGetErrors, ReadUserRateLimitsApiV1UserUsernameRateLimitsGetResponses, ReadUsersApiV1UsersGetData, ReadUsersApiV1UsersGetErrors, ReadUsersApiV1UsersGetResponses, ReadUsersMeApiV1UserMeGetData, ReadUsersMeApiV1UserMeGetResponses, ReadUserTierApiV1UserUsernameTierGetData, ReadUserTierApiV1UserUsernameTierGetErrors, ReadUserTierApiV1UserUsernameTierGetResponses, ReadyApiV1ReadyGetData, ReadyApiV1ReadyGetResponses, RefreshAccessTokenApiV1RefreshPostData, RefreshAccessTokenApiV1RefreshPostResponses, WritePostApiV1UsernamePostPostData, WritePostApiV1UsernamePostPostErrors, WritePostApiV1UsernamePostPostResponses, WriteRateLimitApiV1TierTierNameRateLimitPostData, WriteRateLimitApiV1TierTierNameRateLimitPostErrors, WriteRateLimitApiV1TierTierNameRateLimitPostResponses, WriteTierApiV1TierPostData, WriteTierApiV1TierPostErrors, WriteTierApiV1TierPostResponses, WriteUserApiV1UserPostData, WriteUserApiV1UserPostErrors, WriteUserApiV1UserPostResponses } from './types.gen';
+import type { ApiGetChainApiScanScanIdChainGetData, ApiGetChainApiScanScanIdChainGetErrors, ApiGetChainApiScanScanIdChainGetResponses, ApiGetLogApiScanScanIdLogGetData, ApiGetLogApiScanScanIdLogGetErrors, ApiGetLogApiScanScanIdLogGetResponses, ApiGetReportApiReportScanIdGetData, ApiGetReportApiReportScanIdGetErrors, ApiGetReportApiReportScanIdGetResponses, ApiGetScanApiScanScanIdGetData, ApiGetScanApiScanScanIdGetErrors, ApiGetScanApiScanScanIdGetResponses, ApiScanStatusApiScanScanIdStatusGetData, ApiScanStatusApiScanScanIdStatusGetErrors, ApiScanStatusApiScanScanIdStatusGetResponses, ApiStartScanApiScanPostData, ApiStartScanApiScanPostErrors, ApiStartScanApiScanPostResponses, CreateTaskApiV1TasksTaskPostData, CreateTaskApiV1TasksTaskPostErrors, CreateTaskApiV1TasksTaskPostResponses, EraseDbPostApiV1UsernameDbPostIdDeleteData, EraseDbPostApiV1UsernameDbPostIdDeleteErrors, EraseDbPostApiV1UsernameDbPostIdDeleteResponses, EraseDbUserApiV1DbUserUsernameDeleteData, EraseDbUserApiV1DbUserUsernameDeleteErrors, EraseDbUserApiV1DbUserUsernameDeleteResponses, ErasePostApiV1UsernamePostIdDeleteData, ErasePostApiV1UsernamePostIdDeleteErrors, ErasePostApiV1UsernamePostIdDeleteResponses, EraseRateLimitApiV1TierTierNameRateLimitIdDeleteData, EraseRateLimitApiV1TierTierNameRateLimitIdDeleteErrors, EraseRateLimitApiV1TierTierNameRateLimitIdDeleteResponses, EraseTierApiV1TierNameDeleteData, EraseTierApiV1TierNameDeleteErrors, EraseTierApiV1TierNameDeleteResponses, EraseUserApiV1UserUsernameDeleteData, EraseUserApiV1UserUsernameDeleteErrors, EraseUserApiV1UserUsernameDeleteResponses, GetMyScansApiScanMyGetData, GetMyScansApiScanMyGetResponses, GetTaskApiV1TasksTaskTaskIdGetData, GetTaskApiV1TasksTaskTaskIdGetErrors, GetTaskApiV1TasksTaskTaskIdGetResponses, HealthApiV1HealthGetData, HealthApiV1HealthGetResponses, LoginForAccessTokenApiV1LoginPostData, LoginForAccessTokenApiV1LoginPostErrors, LoginForAccessTokenApiV1LoginPostResponses, LogoutApiV1LogoutPostData, LogoutApiV1LogoutPostErrors, LogoutApiV1LogoutPostResponses, PatchPostApiV1UsernamePostIdPatchData, PatchPostApiV1UsernamePostIdPatchErrors, PatchPostApiV1UsernamePostIdPatchResponses, PatchRateLimitApiV1TierTierNameRateLimitIdPatchData, PatchRateLimitApiV1TierTierNameRateLimitIdPatchErrors, PatchRateLimitApiV1TierTierNameRateLimitIdPatchResponses, PatchTierApiV1TierNamePatchData, PatchTierApiV1TierNamePatchErrors, PatchTierApiV1TierNamePatchResponses, PatchUserApiV1UserUsernamePatchData, PatchUserApiV1UserUsernamePatchErrors, PatchUserApiV1UserUsernamePatchResponses, PatchUserTierApiV1UserUsernameTierPatchData, PatchUserTierApiV1UserUsernameTierPatchErrors, PatchUserTierApiV1UserUsernameTierPatchResponses, ReadPostApiV1UsernamePostIdGetData, ReadPostApiV1UsernamePostIdGetErrors, ReadPostApiV1UsernamePostIdGetResponses, ReadPostsApiV1UsernamePostsGetData, ReadPostsApiV1UsernamePostsGetErrors, ReadPostsApiV1UsernamePostsGetResponses, ReadRateLimitApiV1TierTierNameRateLimitIdGetData, ReadRateLimitApiV1TierTierNameRateLimitIdGetErrors, ReadRateLimitApiV1TierTierNameRateLimitIdGetResponses, ReadRateLimitsApiV1TierTierNameRateLimitsGetData, ReadRateLimitsApiV1TierTierNameRateLimitsGetErrors, ReadRateLimitsApiV1TierTierNameRateLimitsGetResponses, ReadTierApiV1TierNameGetData, ReadTierApiV1TierNameGetErrors, ReadTierApiV1TierNameGetResponses, ReadTiersApiV1TiersGetData, ReadTiersApiV1TiersGetErrors, ReadTiersApiV1TiersGetResponses, ReadUserApiV1UserUsernameGetData, ReadUserApiV1UserUsernameGetErrors, ReadUserApiV1UserUsernameGetResponses, ReadUserRateLimitsApiV1UserUsernameRateLimitsGetData, ReadUserRateLimitsApiV1UserUsernameRateLimitsGetErrors, ReadUserRateLimitsApiV1UserUsernameRateLimitsGetResponses, ReadUsersApiV1UsersGetData, ReadUsersApiV1UsersGetErrors, ReadUsersApiV1UsersGetResponses, ReadUsersMeApiV1UserMeGetData, ReadUsersMeApiV1UserMeGetResponses, ReadUserTierApiV1UserUsernameTierGetData, ReadUserTierApiV1UserUsernameTierGetErrors, ReadUserTierApiV1UserUsernameTierGetResponses, ReadyApiV1ReadyGetData, ReadyApiV1ReadyGetResponses, RefreshAccessTokenApiV1RefreshPostData, RefreshAccessTokenApiV1RefreshPostResponses, WritePostApiV1UsernamePostPostData, WritePostApiV1UsernamePostPostErrors, WritePostApiV1UsernamePostPostResponses, WriteRateLimitApiV1TierTierNameRateLimitPostData, WriteRateLimitApiV1TierTierNameRateLimitPostErrors, WriteRateLimitApiV1TierTierNameRateLimitPostResponses, WriteTierApiV1TierPostData, WriteTierApiV1TierPostErrors, WriteTierApiV1TierPostResponses, WriteUserApiV1UserPostData, WriteUserApiV1UserPostErrors, WriteUserApiV1UserPostResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -516,17 +516,33 @@ export const patchRateLimitApiV1TierTierNameRateLimitIdPatch = <ThrowOnError ext
 };
 
 /**
- * Create Scan
+ * Get My Scans
  */
-export const createScanApiV1ScanPost = <ThrowOnError extends boolean = false>(options: Options<CreateScanApiV1ScanPostData, ThrowOnError>) => {
-    return (options.client ?? client).post<CreateScanApiV1ScanPostResponses, CreateScanApiV1ScanPostErrors, ThrowOnError>({
+export const getMyScansApiScanMyGet = <ThrowOnError extends boolean = false>(options?: Options<GetMyScansApiScanMyGetData, ThrowOnError>) => {
+    return (options?.client ?? client).get<GetMyScansApiScanMyGetResponses, unknown, ThrowOnError>({
         security: [
             {
                 scheme: 'bearer',
                 type: 'http'
             }
         ],
-        url: '/api/v1/scan',
+        url: '/api/scan/my',
+        ...options
+    });
+};
+
+/**
+ * Api Start Scan
+ */
+export const apiStartScanApiScanPost = <ThrowOnError extends boolean = false>(options: Options<ApiStartScanApiScanPostData, ThrowOnError>) => {
+    return (options.client ?? client).post<ApiStartScanApiScanPostResponses, ApiStartScanApiScanPostErrors, ThrowOnError>({
+        security: [
+            {
+                scheme: 'bearer',
+                type: 'http'
+            }
+        ],
+        url: '/api/scan',
         ...options,
         headers: {
             'Content-Type': 'application/json',
@@ -536,37 +552,51 @@ export const createScanApiV1ScanPost = <ThrowOnError extends boolean = false>(op
 };
 
 /**
- * Get My Scans
+ * Api Get Scan
  */
-export const getMyScansApiV1ScanMyGet = <ThrowOnError extends boolean = false>(options?: Options<GetMyScansApiV1ScanMyGetData, ThrowOnError>) => {
-    return (options?.client ?? client).get<GetMyScansApiV1ScanMyGetResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                scheme: 'bearer',
-                type: 'http'
-            }
-        ],
-        url: '/api/v1/scan/my',
+export const apiGetScanApiScanScanIdGet = <ThrowOnError extends boolean = false>(options: Options<ApiGetScanApiScanScanIdGetData, ThrowOnError>) => {
+    return (options.client ?? client).get<ApiGetScanApiScanScanIdGetResponses, ApiGetScanApiScanScanIdGetErrors, ThrowOnError>({
+        url: '/api/scan/{scan_id}',
         ...options
     });
 };
 
 /**
- * Delete Scan
+ * Api Get Log
  */
-export const deleteScanApiV1ScanTaskIdDelete = <ThrowOnError extends boolean = false>(options: Options<DeleteScanApiV1ScanTaskIdDeleteData, ThrowOnError>) => {
-    return (options.client ?? client).delete<DeleteScanApiV1ScanTaskIdDeleteResponses, DeleteScanApiV1ScanTaskIdDeleteErrors, ThrowOnError>({
-        url: '/api/v1/scan/{task_id}',
+export const apiGetLogApiScanScanIdLogGet = <ThrowOnError extends boolean = false>(options: Options<ApiGetLogApiScanScanIdLogGetData, ThrowOnError>) => {
+    return (options.client ?? client).get<ApiGetLogApiScanScanIdLogGetResponses, ApiGetLogApiScanScanIdLogGetErrors, ThrowOnError>({
+        url: '/api/scan/{scan_id}/log',
         ...options
     });
 };
 
 /**
- * Read Scan
+ * Api Get Chain
  */
-export const readScanApiV1ScanTaskIdGet = <ThrowOnError extends boolean = false>(options: Options<ReadScanApiV1ScanTaskIdGetData, ThrowOnError>) => {
-    return (options.client ?? client).get<ReadScanApiV1ScanTaskIdGetResponses, ReadScanApiV1ScanTaskIdGetErrors, ThrowOnError>({
-        url: '/api/v1/scan/{task_id}',
+export const apiGetChainApiScanScanIdChainGet = <ThrowOnError extends boolean = false>(options: Options<ApiGetChainApiScanScanIdChainGetData, ThrowOnError>) => {
+    return (options.client ?? client).get<ApiGetChainApiScanScanIdChainGetResponses, ApiGetChainApiScanScanIdChainGetErrors, ThrowOnError>({
+        url: '/api/scan/{scan_id}/chain',
+        ...options
+    });
+};
+
+/**
+ * Api Get Report
+ */
+export const apiGetReportApiReportScanIdGet = <ThrowOnError extends boolean = false>(options: Options<ApiGetReportApiReportScanIdGetData, ThrowOnError>) => {
+    return (options.client ?? client).get<ApiGetReportApiReportScanIdGetResponses, ApiGetReportApiReportScanIdGetErrors, ThrowOnError>({
+        url: '/api/report/{scan_id}',
+        ...options
+    });
+};
+
+/**
+ * Api Scan Status
+ */
+export const apiScanStatusApiScanScanIdStatusGet = <ThrowOnError extends boolean = false>(options: Options<ApiScanStatusApiScanScanIdStatusGetData, ThrowOnError>) => {
+    return (options.client ?? client).get<ApiScanStatusApiScanScanIdStatusGetResponses, ApiScanStatusApiScanScanIdStatusGetErrors, ThrowOnError>({
+        url: '/api/scan/{scan_id}/status',
         ...options
     });
 };

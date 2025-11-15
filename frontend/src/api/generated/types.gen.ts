@@ -359,13 +359,9 @@ export type ReadyCheck = {
  */
 export type ScanCreate = {
     /**
-     * Host
+     * Target
      */
-    host: string;
-    /**
-     * Port
-     */
-    port: number;
+    target: string;
     /**
      * Title
      */
@@ -381,13 +377,9 @@ export type ScanRead = {
      */
     id: string;
     /**
-     * Host
+     * Target
      */
-    host: string;
-    /**
-     * Port
-     */
-    port: number;
+    target: string;
     /**
      * Title
      */
@@ -1596,103 +1588,183 @@ export type PatchRateLimitApiV1TierTierNameRateLimitIdPatchResponses = {
 
 export type PatchRateLimitApiV1TierTierNameRateLimitIdPatchResponse = PatchRateLimitApiV1TierTierNameRateLimitIdPatchResponses[keyof PatchRateLimitApiV1TierTierNameRateLimitIdPatchResponses];
 
-export type CreateScanApiV1ScanPostData = {
-    body: ScanCreate;
-    path?: never;
-    query?: never;
-    url: '/api/v1/scan';
-};
-
-export type CreateScanApiV1ScanPostErrors = {
-    /**
-     * Validation Error
-     */
-    422: HttpValidationError;
-};
-
-export type CreateScanApiV1ScanPostError = CreateScanApiV1ScanPostErrors[keyof CreateScanApiV1ScanPostErrors];
-
-export type CreateScanApiV1ScanPostResponses = {
-    /**
-     * Successful Response
-     */
-    200: ScanRead;
-};
-
-export type CreateScanApiV1ScanPostResponse = CreateScanApiV1ScanPostResponses[keyof CreateScanApiV1ScanPostResponses];
-
-export type GetMyScansApiV1ScanMyGetData = {
+export type GetMyScansApiScanMyGetData = {
     body?: never;
     path?: never;
     query?: never;
-    url: '/api/v1/scan/my';
+    url: '/api/scan/my';
 };
 
-export type GetMyScansApiV1ScanMyGetResponses = {
+export type GetMyScansApiScanMyGetResponses = {
     /**
-     * Response Get My Scans Api V1 Scan My Get
+     * Response Get My Scans Api Scan My Get
      *
      * Successful Response
      */
     200: Array<ScanRead>;
 };
 
-export type GetMyScansApiV1ScanMyGetResponse = GetMyScansApiV1ScanMyGetResponses[keyof GetMyScansApiV1ScanMyGetResponses];
+export type GetMyScansApiScanMyGetResponse = GetMyScansApiScanMyGetResponses[keyof GetMyScansApiScanMyGetResponses];
 
-export type DeleteScanApiV1ScanTaskIdDeleteData = {
-    body?: never;
-    path: {
-        /**
-         * Task Id
-         */
-        task_id: string;
-    };
+export type ApiStartScanApiScanPostData = {
+    body: ScanCreate;
+    path?: never;
     query?: never;
-    url: '/api/v1/scan/{task_id}';
+    url: '/api/scan';
 };
 
-export type DeleteScanApiV1ScanTaskIdDeleteErrors = {
+export type ApiStartScanApiScanPostErrors = {
     /**
      * Validation Error
      */
     422: HttpValidationError;
 };
 
-export type DeleteScanApiV1ScanTaskIdDeleteError = DeleteScanApiV1ScanTaskIdDeleteErrors[keyof DeleteScanApiV1ScanTaskIdDeleteErrors];
+export type ApiStartScanApiScanPostError = ApiStartScanApiScanPostErrors[keyof ApiStartScanApiScanPostErrors];
 
-export type DeleteScanApiV1ScanTaskIdDeleteResponses = {
+export type ApiStartScanApiScanPostResponses = {
     /**
      * Successful Response
      */
     200: unknown;
 };
 
-export type ReadScanApiV1ScanTaskIdGetData = {
+export type ApiGetScanApiScanScanIdGetData = {
     body?: never;
     path: {
         /**
-         * Task Id
+         * Scan Id
          */
-        task_id: string;
+        scan_id: number;
     };
     query?: never;
-    url: '/api/v1/scan/{task_id}';
+    url: '/api/scan/{scan_id}';
 };
 
-export type ReadScanApiV1ScanTaskIdGetErrors = {
+export type ApiGetScanApiScanScanIdGetErrors = {
     /**
      * Validation Error
      */
     422: HttpValidationError;
 };
 
-export type ReadScanApiV1ScanTaskIdGetError = ReadScanApiV1ScanTaskIdGetErrors[keyof ReadScanApiV1ScanTaskIdGetErrors];
+export type ApiGetScanApiScanScanIdGetError = ApiGetScanApiScanScanIdGetErrors[keyof ApiGetScanApiScanScanIdGetErrors];
 
-export type ReadScanApiV1ScanTaskIdGetResponses = {
+export type ApiGetScanApiScanScanIdGetResponses = {
     /**
      * Successful Response
      */
-    200: ScanRead;
+    200: unknown;
 };
 
-export type ReadScanApiV1ScanTaskIdGetResponse = ReadScanApiV1ScanTaskIdGetResponses[keyof ReadScanApiV1ScanTaskIdGetResponses];
+export type ApiGetLogApiScanScanIdLogGetData = {
+    body?: never;
+    path: {
+        /**
+         * Scan Id
+         */
+        scan_id: number;
+    };
+    query?: never;
+    url: '/api/scan/{scan_id}/log';
+};
+
+export type ApiGetLogApiScanScanIdLogGetErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type ApiGetLogApiScanScanIdLogGetError = ApiGetLogApiScanScanIdLogGetErrors[keyof ApiGetLogApiScanScanIdLogGetErrors];
+
+export type ApiGetLogApiScanScanIdLogGetResponses = {
+    /**
+     * Successful Response
+     */
+    200: unknown;
+};
+
+export type ApiGetChainApiScanScanIdChainGetData = {
+    body?: never;
+    path: {
+        /**
+         * Scan Id
+         */
+        scan_id: number;
+    };
+    query?: never;
+    url: '/api/scan/{scan_id}/chain';
+};
+
+export type ApiGetChainApiScanScanIdChainGetErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type ApiGetChainApiScanScanIdChainGetError = ApiGetChainApiScanScanIdChainGetErrors[keyof ApiGetChainApiScanScanIdChainGetErrors];
+
+export type ApiGetChainApiScanScanIdChainGetResponses = {
+    /**
+     * Successful Response
+     */
+    200: unknown;
+};
+
+export type ApiGetReportApiReportScanIdGetData = {
+    body?: never;
+    path: {
+        /**
+         * Scan Id
+         */
+        scan_id: number;
+    };
+    query?: never;
+    url: '/api/report/{scan_id}';
+};
+
+export type ApiGetReportApiReportScanIdGetErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type ApiGetReportApiReportScanIdGetError = ApiGetReportApiReportScanIdGetErrors[keyof ApiGetReportApiReportScanIdGetErrors];
+
+export type ApiGetReportApiReportScanIdGetResponses = {
+    /**
+     * Successful Response
+     */
+    200: unknown;
+};
+
+export type ApiScanStatusApiScanScanIdStatusGetData = {
+    body?: never;
+    path: {
+        /**
+         * Scan Id
+         */
+        scan_id: number;
+    };
+    query?: never;
+    url: '/api/scan/{scan_id}/status';
+};
+
+export type ApiScanStatusApiScanScanIdStatusGetErrors = {
+    /**
+     * Validation Error
+     */
+    422: HttpValidationError;
+};
+
+export type ApiScanStatusApiScanScanIdStatusGetError = ApiScanStatusApiScanScanIdStatusGetErrors[keyof ApiScanStatusApiScanScanIdStatusGetErrors];
+
+export type ApiScanStatusApiScanScanIdStatusGetResponses = {
+    /**
+     * Successful Response
+     */
+    200: unknown;
+};

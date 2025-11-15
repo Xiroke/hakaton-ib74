@@ -2,7 +2,7 @@ services:
   db:
     image: postgres:13
     env_file:
-      - ./src/.env
+      - ./backend/src/.env.development
     volumes:
       - postgres-data:/var/lib/postgresql/data
     # -------- replace with comment to run migrations with docker --------

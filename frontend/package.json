@@ -2,18 +2,19 @@
   "name": "frontend",
   "private": true,
   "type": "module",
-    "scripts": {
-      "dev": "vite --port 3000",
-      "build": "vite build && tsc",
-      "serve": "vite preview",
-      "test": "vitest run",
-      "lint": "eslint",
-      "format": "prettier",
-      "check": "prettier --write . && eslint --fix",
-      "openapi-ts": "openapi-ts"
-    },
+  "scripts": {
+    "dev": "vite --port 3000",
+    "build": "vite build && tsc",
+    "serve": "vite preview",
+    "test": "vitest run",
+    "lint": "eslint",
+    "format": "prettier",
+    "check": "prettier --write . && eslint --fix",
+    "openapi-ts": "openapi-ts"
+  },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.1.11",
+    "@radix-ui/react-collapsible": "^1.1.12",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-separator": "^1.1.8",
@@ -60,6 +61,7 @@
     "globals": "^16.5.0",
     "jsdom": "^27.0.0",
     "prettier": "^3.5.3",
+    "shadcn-ui": "^0.9.5",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.46.4",
     "vite": "^7.1.7",
