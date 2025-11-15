@@ -1,31 +1,11 @@
 import asyncio
-import logging
-
-from arq.worker import Worker
-
-logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-
-
-# -------- background tasks --------
-async def sample_background_task(ctx: Worker, name: str) -> str:
-    await asyncio.sleep(5)
-    return f"Task {name} is complete!"
-
-
-# -------- base functions --------
-async def startup(ctx: Worker) -> None:
-    logging.info("Worker Started")
-
-
-async def shutdown(ctx: Worker) -> None:
-    logging.info("Worker end")
-
 
 from src.app.core.db.database import async_session_factory
 from src.app.crud.crud_scan import crud_scans
 from src.app.models import Scan
-from src.app.services.exploit_phase import run_exploit_phase
-from src.app.services.report import ReportGenerator
+
+from .exploitation import run_exploit_phase
+from .reporting import ReportGenerator
 
 NMAP_PATH = "nmap"
 NUCLEI_PATH = "nuclei"

@@ -1,38 +1,82 @@
-from arq.jobs import Job
-from fastapi import APIRouter, HTTPException
+import asyncio
+from uuid import uuid4
 
-from src.app.core.utils import queue
+from fastapi import APIRouter, Depends, HTTPException
+from fastcrud import FastCRUD
+from sqlalchemy.ext.asyncio import AsyncSession
 
-router = APIRouter(tags=["scan"])
+from src.app.api.dependencies import get_current_user
+from src.app.core.db.database import async_get_db
+from src.app.crud.crud_scan import crud_scans
+from src.app.models import Scan
+from src.app.schemas.scan import ScanCreate, ScanCreateInternal, ScanRead
+from src.app.services.scan_worker import run_full_scan
+
+router = APIRouter()
+scan_crud = FastCRUD(Scan)
 
 
-@router.get("/scan")
-async def scan():
-    job = await queue.pool.enqueue_job(
-        "scan_task",
+# -----------------------------------------------------------------------------
+# Создать задачу
+# -----------------------------------------------------------------------------
+@router.post("/scan", response_model=ScanRead)
+async def create_scan(
+    scan: ScanCreate,
+    db: AsyncSession = Depends(async_get_db),
+    user=Depends(get_current_user),
+):
+    task_id = str(uuid4())
+
+    task = await scan_crud.create(
+        db=db,
+        object=ScanCreateInternal(
+            id=task_id,
+            title=scan.title,
+            host=scan.host,
+            port=scan.port,
+            status="pending",
+            output="",
+            user_id=user["id"],
+        ),
     )
+    await db.commit()
 
-    return {"job_id": job.job_id}
+    # Запускаем асинхронный воркер
+    asyncio.create_task(run_full_scan(task_id, scan.host, scan.port))
 
-
-@router.get("/scan/{job_id}/status")
-async def scan_status(job_id: str):
-    job = Job(job_id, queue.pool)
-    status = await job.status()  # статус:queued, in_progress, complete
-    return {"job_id": job_id, "status": status.value}
+    return task
 
 
-@router.get("/scan/{job_id}/result")
-async def scan_result(job_id: str):
-    job = Job(job_id, queue.pool)
+# -----------------------------------------------------------------------------
+# Мои задачи
+# -----------------------------------------------------------------------------
+@router.get("/scan/my", response_model=list[ScanRead])
+async def get_my_scans(user=Depends(get_current_user), db: AsyncSession = Depends(async_get_db)):
+    result = await crud_scans.get_multi(db=db, user_id=user["id"], schema_to_select=ScanRead)
+    return result["data"]
 
-    status = await job.status()
-    if status != "complete":
-        raise HTTPException(status_code=400, detail="Результат ещё не готов")
 
-    try:
-        result = await job.result(timeout=0)
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Ошибка получения результата: {e}")
+# -----------------------------------------------------------------------------
+# Получить одну задачу
+# -----------------------------------------------------------------------------
+@router.get("/scan/{task_id}", response_model=ScanRead)
+async def read_scan(task_id: str, db: AsyncSession = Depends(async_get_db)):
+    task = await scan_crud.get(db=db, id=task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail="Scan not found")
+    return task
 
-    return {"job_id": job_id, "result": result}
+
+# -----------------------------------------------------------------------------
+# Удалить
+# -----------------------------------------------------------------------------
+@router.delete("/scan/{task_id}")
+async def delete_scan(task_id: str, db: AsyncSession = Depends(async_get_db)):
+    task = await scan_crud.get(db=db, id=task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail="Scan not found")
+
+    await scan_crud.delete(db=db, id=task_id)
+    await db.commit()
+
+    return {"status": "deleted"}

@@ -1,0 +1,161 @@
+import json
+import re
+
+from src.app.models.scan import Scan
+
+
+def extract_cve_from_nuclei(nuclei_output: str) -> dict:
+    """
+    Извлекает CVE из строк лога Nuclei.
+    Ищет JSON внутри строки и игнорирует префиксы и не-JSON строки.
+    """
+    cve_info = {}
+    lines = nuclei_output.splitlines()
+    for line in lines:
+        # Ищем начало JSON-объекта в строке
+        json_start_index = line.find("{")
+        if json_start_index == -1:
+            continue  # В этой строке нет JSON, пропускаем
+
+        # Обрезаем строку, чтобы получить только JSON-часть
+        json_part = line[json_start_index:]
+
+        try:
+            data = json.loads(json_part)
+            found_cves_for_line = set()
+
+            # 1. Проверяем template-id
+            template_id = data.get("template-id", "").upper()
+            if template_id.startswith("CVE-"):
+                found_cves_for_line.add(template_id)
+
+            # 2. Проверяем поле classification.cve-id (на всякий случай)
+            classification = data.get("info", {}).get("classification", {})
+            if classification:
+                cve_ids = classification.get("cve-id", [])
+                if not isinstance(cve_ids, list):
+                    cve_ids = [cve_ids]
+                for cve in cve_ids:
+                    if cve and cve.upper().startswith("CVE-"):
+                        found_cves_for_line.add(cve.upper())
+
+            # Если для этой строки найдены CVE, добавляем информацию
+            if found_cves_for_line:
+                name = data.get("info", {}).get("name", "N/A")
+                severity = data.get("info", {}).get("severity", "unknown")
+                for cve in found_cves_for_line:
+                    if cve not in cve_info:
+                        cve_info[cve] = {"name": name, "severity": severity}
+
+        except json.JSONDecodeError:
+            # Если часть строки выглядела как JSON, но не является им
+            continue
+
+    return cve_info
+
+
+class ReportGenerator:
+    def __init__(self, scan: Scan, bdu_map: dict):
+        self.scan = scan
+        self.bdu_map = bdu_map
+        self.report_parts = []
+        self.nuclei_cves = extract_cve_from_nuclei(self.scan.nuclei_output)
+        self.successful_exploit = "SUCCESS" in self.scan.exploit_log and "завершился успешно" in self.scan.exploit_log
+        self.exploited_service_info = self._get_exploited_service_info()
+
+    def generate(self) -> str:
+        self._add_title()
+        self._add_summary()
+        self._add_steps_to_reproduce()
+        self._add_mitigation()
+        self._add_impact()
+        return "\n\n".join(self.report_parts)
+
+    def _add_section(self, title: str, content: str):
+        header = f"### {title}\n{'=' * (len(title) + 4)}"
+        self.report_parts.append(f"{header}\n{content}")
+
+    def _get_exploited_service_info(self) -> str:
+        if not self.successful_exploit:
+            return "N/A"
+        match = re.search(r"Анализ сервиса: (.*?) на порту (\d+)", self.scan.exploit_log)
+        return f"{match.group(1)} на порту {match.group(2)}" if match else "Не удалось определить"
+
+    def _add_title(self):
+        self.report_parts.append(f"Отчет об оценке защищенности для цели: {self.scan.target}")
+
+    def _add_summary(self):
+        summary_lines = []
+        if self.successful_exploit:
+            summary_lines.append(
+                f"Обнаружена критическая уязвимость, допускающая удаленное выполнение кода (RCE). Уязвимый сервис: {self.exploited_service_info}."
+            )
+            summary_lines.append("Уровень риска оценивается как КРИТИЧЕСКИЙ.")
+        high_cves = [cve for cve, data in self.nuclei_cves.items() if data["severity"] in ["high", "critical"]]
+        if high_cves:
+            summary_lines.append(
+                f"Дополнительно, выявлено {len(high_cves)} уязвимостей высокой или критической степени опасности."
+            )
+        if not summary_lines:
+            summary_lines.append(
+                "В ходе автоматизированного сканирования не было выявлено критических уязвимостей. Рекомендуется ручной анализ."
+            )
+        self._add_section("Резюме", "\n".join(summary_lines))
+
+    # ❗️ НОВАЯ ВЕРСИЯ С ОГРАНИЧЕНИЕМ ЛОГОВ В ОТЧЕТЕ
+    def _add_steps_to_reproduce(self):
+        def limit_log(log_text: str, limit: int, name: str) -> str:
+            lines = log_text.strip().splitlines()
+            if len(lines) > limit:
+                return f"... (лог {name} урезан, показаны последние {limit} строк) ...\n" + "\n".join(lines[-limit:])
+            return log_text
+
+        content = (
+            "Ниже представлены технические логи, демонстрирующие процесс обнаружения и эксплуатации уязвимостей.\n\n"
+            "--- ЛОГ СКАНИРОВАНИЯ NMAP ---\n"
+            f"{limit_log(self.scan.nmap_output, 100, 'Nmap')}\n\n"
+            "--- ЛОГ ПОПЫТКИ ЭКСПЛУАТАЦИИ ---\n"
+            f"{limit_log(self.scan.exploit_log, 150, 'Exploitation')}"
+        )
+        self._add_section("Шаги по воспроизведению", content)
+
+    def _add_mitigation(self):
+        rec_lines = []
+        if self.successful_exploit:
+            rec_lines.append(
+                f"[КРИТИЧНО] Для сервиса ({self.exploited_service_info}):\n  - Немедленно обновить ПО сервиса.\n  - Если невозможно, отключить сервис или ограничить доступ к нему."
+            )
+        for cve, data in self.nuclei_cves.items():
+            if data["severity"] in ["high", "critical"]:
+                rec_lines.append(
+                    f"[ВЫСОКИЙ] Для уязвимости {cve} ({data['name']}):\n  - Установите последние обновления безопасности."
+                )
+        if not rec_lines:
+            rec_lines.append(
+                "Общие рекомендации:\n  - Поддерживайте все ПО в актуальном состоянии.\n  - Регулярно проводите сканирования безопасности."
+            )
+        self._add_section("Устранение последствий", "\n\n".join(rec_lines))
+
+    def _add_impact(self):
+        impact_lines = ["Найденные уязвимости (CVE и БДУ ФСТЭК):"]
+        if self.nuclei_cves:
+            for cve, data in sorted(self.nuclei_cves.items()):
+                bdu_id = self.bdu_map.get(cve, "Не найдено")
+                impact_lines.append(f"  - CVE: {cve} (Критичность: {data['severity']}) -> БДУ ФСТЭК: {bdu_id}")
+        else:
+            impact_lines.append("  - Уязвимости CVE не были обнаружены средством Nuclei.")
+        impact_lines.append("\nИспользованные скрипты и эксплойты:")
+        used_exploits = re.findall(
+            r"(/usr/share/exploitdb/exploits/[\w./-]+|exploits/ai_ready_[\w./-]+)", self.scan.exploit_log
+        )
+        if used_exploits:
+            for exploit_path in sorted(list(set(used_exploits))):
+                if "ai_ready" in exploit_path:
+                    impact_lines.append(f"  - Сгенерированный скрипт: {exploit_path}")
+                else:
+                    match = re.search(r"/(\d+)\.", exploit_path)
+                    edb_id = f" (EDB-ID: {match.group(1)})" if match else ""
+                    impact_lines.append(f"  - Исходный эксплойт: {exploit_path}{edb_id}")
+        else:
+            impact_lines.append("  - Автоматическая эксплуатация не производилась или не удалась.")
+        self._add_section("Влияние", "\n".join(impact_lines))
