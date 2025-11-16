@@ -1,14 +1,21 @@
-FROM oven/bun:latest AS base
+# Используем официальный образ Node.js. Alpine - легковесная версия.
+FROM node:22-alpine
+
+# Устанавливаем рабочую директорию внутри контейнера
 WORKDIR /app
 
-COPY package.json bun.lockb ./
-RUN bun install --frozen-lockfile
+# Копируем package.json и package-lock.json для установки зависимостей
+# Это делается отдельным шагом для эффективного использования кэша Docker
+COPY package*.json ./
 
+# Устанавливаем зависимости проекта
+RUN npm install
+
+# Копируем остальные файлы проекта
 COPY . .
-RUN bun run build
 
-FROM oven/bun:latest AS production
-WORKDIR /app
-COPY --from=base /app/dist ./dist
-EXPOSE 4173
-CMD ["bun", "run", "serve"]
+# Открываем порт 3000, на котором обычно работает dev-сервер React
+EXPOSE 3000
+
+# Команда для запуска приложения в режиме разработки
+CMD ["npm", "run", "dev"]
