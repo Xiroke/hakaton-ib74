@@ -134,6 +134,10 @@ class URLS(BaseSettings):
     FRONTEND_URL: str = config("FRONTEND_URL", default="http://localhost:3000")
 
 
+class PentestToken(BaseSettings):
+    PENTEST_TOKEN: str = config("PENTEST_TOKEN")
+
+
 class Settings(
     AppSettings,
     SQLiteSettings,
@@ -149,6 +153,7 @@ class Settings(
     CRUDAdminSettings,
     EnvironmentSettings,
     URLS,
+    PentestToken,
 ):
     pass
 

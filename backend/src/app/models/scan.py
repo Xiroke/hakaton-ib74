@@ -21,7 +21,7 @@ class Scan(Base):
     exploit_log: Mapped[str] = mapped_column(Text, default="")  # Лог поиска и попыток эксплуатации
     report_content: Mapped[str] = mapped_column(Text, default="")  # Финальный текстовый отчет
 
-    status: Mapped[str] = mapped_column(String(20), default="queued")  # queued -> running -> finished -> failed
+    status: Mapped[str] = mapped_column(String(100), default="queued")  # queued -> running -> finished -> failed
     output: Mapped[str] = mapped_column(Text, nullable=True, default="")
 
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default_factory=lambda: datetime.now(UTC))

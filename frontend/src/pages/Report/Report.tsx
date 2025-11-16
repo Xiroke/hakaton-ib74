@@ -43,7 +43,7 @@ export const Report: FC = () => {
         <Card>
           <Collapsible>
             <CardContent className="whitespace-pre-wrap break-all">
-              {reportLogs.slice(0, 500)}
+              {reportLogs ? reportLogs.slice(0, 500) : 'Здесь пусто'}
               <CollapsibleContent className="inline">{reportLogs.slice(500, reportLogs.length)}</CollapsibleContent>
             </CardContent>
             <CollapsibleTrigger asChild>
