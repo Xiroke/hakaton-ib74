@@ -22,4 +22,16 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  // Добавьте этот раздел:
+  server: {
+    host: true, // Позволяет доступ извне контейнера
+    port: 3000,
+    proxy: {
+      '/api': {
+        target: 'http://backend:8000', // Имя сервиса из docker-compose.yml
+        changeOrigin: true,
+        secure: false, // Используйте true, если backend на https
+      },
+    },
+  },
 })
