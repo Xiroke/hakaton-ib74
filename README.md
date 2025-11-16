@@ -1,27 +1,22 @@
-Краткий гайд запуск DEV
+Перед запуском убедитесь что у вас установленна последняя версия Docker и Docker compose, вот оффициальный гайд 
+https://docs.docker.com/engine/install
 
-ДОКЕР
-docker compose -f docker-compose.dev.yaml up
+Далее вам необходимо на сайте https://openrouter.ai/settings/keys сгенерировать ключ и сохранить его
 
-БЭКЭНД
-найти bdu.xml и положить в папку backend
+после чего, нужно в директорию backend добавить файл bdu.xml
+и изменить файл /backend/src/.env.development
+в строчку, представленную ниже, нужно добавить токен, который вы генерировали ранее
+```bash
+PENTEST_TOKEN=''
+```
+После чего, из корневой директории проекта запустить команду:
+```bash
+sudo docker compose up --build
+```
+и перейти по адресу 
+```
+http://localhost:3000
+```
+FAQ
+Если ИИ перестал вам отвечать, то токен нужно перегенерить с другого аккаунта)
 
-переименовать
-
-.env.development.example - >.env.development
-
-указать в нем PENTEST_TOKEN
-
-python3 -m venv .venv
-
-pip install -r requirements.txt
-
-в папке backend
-uvicorn src.app.main:app --reload --reload-exclude '*/exploits_templates/*' --reload-exclude '*/venv/*'  --reload-exclude '*/exploits/*'
-
-ФРОНТЕНД
-npm i
-npm run dev
-
-открыть
-localhost:3000
