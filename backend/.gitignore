@@ -1,4 +1,6 @@
 bdu.xml
+.env.development
+.env.production
 
 *.db
 # Byte-compiled / optimized / DLL files

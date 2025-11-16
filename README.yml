@@ -16,6 +16,12 @@ python3 -m venv .venv
 
 pip install -r requirements.txt
 
+в папке backend
+uvicorn src.app.main:app --reload --reload-exclude '*/exploits_templates/*' --reload-exclude '*/venv/*'  --reload-exclude '*/exploits/*'
+
 ФРОНТЕНД
 npm i
 npm run dev
+
+открыть
+localhost:3000

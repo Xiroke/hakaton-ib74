@@ -24,8 +24,7 @@ export const ReportsHistory: FC = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead>Название</TableHead>
-                  <TableHead>Host</TableHead>
-                  <TableHead>Port</TableHead>
+                  <TableHead>Цель</TableHead>
                   <TableHead>Статус</TableHead>
                   <TableHead>Создан</TableHead>
                   <TableHead>Действия</TableHead>
@@ -36,8 +35,7 @@ export const ReportsHistory: FC = () => {
                 {scans.data?.map(scan => (
                   <TableRow key={scan.id}>
                     <TableCell>{scan.title}</TableCell>
-                    <TableCell>{scan.host}</TableCell>
-                    <TableCell>{scan.port}</TableCell>
+                    <TableCell>{scan.target}</TableCell>
                     <TableCell>{scan.status}</TableCell>
                     <TableCell>{new Date(scan.created_at).toLocaleString()}</TableCell>
                     <TableCell><Link params={{ id: scan.id }} to="/dashboard/report/$id">Перейти</Link></TableCell>

@@ -15,7 +15,6 @@ dnspython==2.7.0
 ecdsa==0.19.1
 email-validator==2.2.0
 fastapi==0.115.14
--e file:///home/xiroke/hakaton-ib74/backend
 fastcrud==0.19.1
 filelock==3.20.0
 greenlet==3.2.3

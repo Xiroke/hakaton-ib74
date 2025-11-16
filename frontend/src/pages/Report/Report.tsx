@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from '@tanstack/react-router'
-import { type FC } from 'react'
+import mermaid from 'mermaid'
+import { type FC, useEffect, useRef } from 'react'
 
-import { apiGetLogApiScanScanIdLogGetOptions } from '@/api/generated/@tanstack/react-query.gen'
+import { apiGetChainApiScanScanIdChainGetOptions, apiGetLogApiScanScanIdLogGetOptions, apiGetReportApiReportScanIdGetOptions } from '@/api/generated/@tanstack/react-query.gen'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import {
@@ -10,28 +11,35 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
 
-type Vuln = {
-  cve: string
-  description: string
-  name: string
-  severity: string
+const MermaidChart = ({ chart }: { chart: string }) => {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const renderDiagram = async () => {
+      if (ref.current && chart) {
+        try {
+          const { svg } = await mermaid.render(`mermaid-${Date.now()}`, chart)
+          ref.current.innerHTML = svg
+        }
+        catch (error) {
+          console.error('Mermaid rendering failed:', error)
+          ref.current.innerHTML = `<pre>Diagram Error: ${chart}</pre>`
+        }
+      }
+    }
+
+    renderDiagram()
+  }, [chart])
+
+  return <div ref={ref} />
 }
-
 export const Report: FC = () => {
   const { id } = useParams({ from: '/dashboard/report/$id' })
-  const vulns = []
   const { data: reportLogs, isSuccess, refetch } = useQuery(apiGetLogApiScanScanIdLogGetOptions({ path: { scan_id: Number(id) } }))
-
+  const { data: reportData } = useQuery(apiGetReportApiReportScanIdGetOptions({ path: { scan_id: Number(id) } }))
+  const { data: reportDiagram } = useQuery(apiGetChainApiScanScanIdChainGetOptions({ path: { scan_id: Number(id) } }))
+  console.log(reportDiagram)
   return (
     <div>
       <div className="flex justify-between">
@@ -55,50 +63,17 @@ export const Report: FC = () => {
         </Card>
       )}
 
-      <h3 className="text-lg font-semibold mt-10 mb-4">Найденные уязвимости</h3>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[200px]">Название</TableHead>
-            <TableHead>Описание</TableHead>
-            <TableHead className="w-[160px]">CVE</TableHead>
-            <TableHead className="w-[160px]">Степень</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {vulns.map(v => (
-            <TableRow key={v.cve}>
-              <TableCell className="font-medium">{v.name}</TableCell>
-              <TableCell>{v.description}</TableCell>
-              <TableCell>
-                <a
-                  className="text-primary underline"
-                  href={`https://cve.mitre.org/cgi-bin/cvename.cgi?name=${v.cve}`}
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  {v.cve}
-                </a>
-              </TableCell>
-              <TableCell
-                className={
-                  v.severity === 'Критическая' ? 'text-red-600' : 'text-yellow-600'
-                }
-              >
-                {v.severity}
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-        <TableFooter>
-          <TableRow>
-            <TableCell colSpan={4}>
-              Всего найдено:
-              {vulns.length}
-            </TableCell>
-          </TableRow>
-        </TableFooter>
-      </Table>
+      <h3 className="text-lg font-semibold mt-10 mb-4 whitespace-pre-wrap">Отчет</h3>
+      <div className="whitespace-pre-wrap">
+        {reportData?.report?.replace(/###/g, '') ?? 'Здесь пусто'}
+      </div>
+
+      {reportDiagram && (
+        <div className="mt-10">
+          <h3 className="text-lg font-semibold mt-10 mb-4 whitespace-pre-wrap">Диграмма</h3>
+          <MermaidChart chart={reportDiagram} />
+        </div>
+      )}
     </div>
   )
 }

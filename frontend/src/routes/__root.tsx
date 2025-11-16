@@ -1,14 +1,10 @@
 import type { QueryClient } from '@tanstack/react-query'
 
-import { TanStackDevtools } from '@tanstack/react-devtools'
 import { createRootRouteWithContext, Outlet, redirect } from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 
 import { refreshAccessTokenApiV1RefreshPost } from '@/api/generated'
 import { SidebarProvider } from '@/components/ui/sidebar'
 import { Toaster } from '@/components/ui/sonner'
-
-import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -42,18 +38,6 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       <SidebarProvider>
         <Outlet />
       </SidebarProvider>
-      <TanStackDevtools
-        config={{
-          position: 'bottom-right',
-        }}
-        plugins={[
-          {
-            name: 'Tanstack Router',
-            render: <TanStackRouterDevtoolsPanel />,
-          },
-          TanStackQueryDevtools,
-        ]}
-      />
     </>
   ),
 })
